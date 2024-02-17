@@ -1,0 +1,63 @@
+import os
+import random
+
+class MusicPlayer:
+    def __init__(self):
+        self.library = {}  # Dictionary to store music library (song_name: file_path)
+        self.playlists = {}  # Dictionary to store playlists (playlist_name: [song_names])
+
+    def import_music(self, directory):
+        for root, dirs, files in os.walk(directory):
+            for file in files:
+                if file.endswith('.mp3') or file.endswith('.wav') or file.endswith('.flac'):
+                    self.library[file] = os.path.join(root, file)
+
+    def create_playlist(self, playlist_name):
+        self.playlists[playlist_name] = []
+
+    def add_song_to_playlist(self, playlist_name, song_name):
+        if song_name in self.library:
+            if playlist_name in self.playlists:
+                self.playlists[playlist_name].append(song_name)
+            else:
+                print("Playlist doesn't exist.")
+        else:
+            print("Song not found in the library.")
+
+    def play_song(self, song_name):
+        if song_name in self.library:
+            print(f"Playing {song_name}")
+            # Code to play the song (you can use libraries like pygame, pydub, etc.)
+        else:
+            print("Song not found in the library.")
+
+    def shuffle_playlist(self, playlist_name):
+        if playlist_name in self.playlists:
+            random.shuffle(self.playlists[playlist_name])
+            print(f"{playlist_name} shuffled.")
+        else:
+            print("Playlist not found.")
+
+    def display_library(self):
+        print("Library:")
+        for song in self.library:
+            print(song)
+
+    def display_playlist(self, playlist_name):
+        if playlist_name in self.playlists:
+            print(f"Playlist: {playlist_name}")
+            for song in self.playlists[playlist_name]:
+                print(song)
+        else:
+            print("Playlist not found.")
+
+# Sample usage:
+player = MusicPlayer()
+player.import_music('/path/to/your/music/directory')
+player.create_playlist('My Playlist')
+player.add_song_to_playlist('My Playlist', 'song1.mp3')
+player.add_song_to_playlist('My Playlist', 'song2.mp3')
+player.display_playlist('My Playlist')
+player.shuffle_playlist('My Playlist')
+player.display_playlist('My Playlist')
+player.play_song('song1.mp3')
